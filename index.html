@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>首页 添加</title>
+        
+    </head>
+    <body>
+        <div id="app">
+           {{name, age}} {{age}} {{message}}
+           <span v-bind:title="message">鼠标放在这看提示</span>
+        </div>
+        <div id="app2">
+            {{message}}<br>
+            <p v-if="seen">看得到吗</p>
+        </div>
+        <div id="app3">
+            <ol>
+                <li v-for="todo in todos">
+                    {{todo}}
+                </li>
+            </ol>
+        </div>
+        <hr>
+        <div id="app4">
+            app4
+            <ol>
+                <todo-item
+                    v-for="item in groceryList"
+                    v-bind:shucai='item'
+                    v-bind:key='item.id' >
+
+                </todo-item>
+            </ol>
+            {{a}}
+            <input type="text" v-model='a' ><hr>
+            <button v-bind:disabled="isButtonDisabled">Button</button>
+            <a :[kkkk]="url" >百度URL</a>
+        </div>
+        <hr>
+        <div id="example">
+            <input type="text" v-model="message" >
+            <p>Original message: "{{ message }}"</p>
+            <p>Computed reversed message: "{{ reversedMessage }}"</p><hr>
+            <p>firstname: "{{firstname}}"</p>
+            <p>lasttname: {{lastname}}</p>
+            <p>fullname: {{fullname}}</p>
+            <input type="text" v-model='fullname' >
+            <div v-if="Math.random() > 0.5">
+                Now you see me {{Math.random()}}
+              </div>
+              <div v-else>
+                Now you don't
+              </div>
+        </div>
+        
+        
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el:'#app',
+            data:{
+                message:'Hello Vue!!' + new Date().toLocaleString(),
+                age: 19,
+                name: '李四'
+            }
+        })
+
+        var app2 = new Vue({
+            el:'#app2',
+            data:{
+                message:'这是第二个消息',
+                seen:false
+            }
+        })
+
+        var app3 = new Vue({
+            el:"#app3",
+            data:{
+                todos:[
+                    'dddddd',
+                    'wwwwwww',
+                    'eeeeeee'
+                ]
+            }
+        })
+        Vue.component('todo-item',{
+            props: ['shucai'],
+            template:'<li>{{shucai.text}}{{shucai.id}}</li>'
+        })
+        var app4 = new Vue({
+            el:'#app4',
+            data: {
+                groceryList: [
+                    {id: 3, text: '蔬菜'},
+                    {id: 6, text: '奶酪'},
+                    {id: 9, text: '蛋糕'}
+                ],
+                a:'测试',
+                isButtonDisabled:null,
+                url:"http://www.baidu.com",
+                kkkk:'href'
+            },
+            watch:{'a':function (newValue,oldValue) {
+                console.log(newValue);
+            }},
+            created:function() {
+                console.log('a被创建后执行了：' + this.a);
+            }
+            
+            
+        })
+
+        var vm = new Vue({
+            el: '#example',
+            data: {
+             message: 'Hello',
+             firstname:'jon',
+             lastname:'tom'
+            },
+            computed: {
+                // 计算属性的 getter
+                reversedMessage: function () {
+                    // `this` 指向 vm 实例
+                    //return this.message.split('').reverse().join('')
+                    return Date.now();
+                },
+                fullname:{
+                    get:function (){
+                        return this.firstname + ' ' + this.lastname;
+                    },
+                    set:function (newValue){
+                        var names = newValue.split(' ');
+                        if(names.length > 1) {
+                            this.firstname = names[0];
+                            this.lastname = names[1];
+                        }
+                    }
+                }
+
+            }
+        })
+        
+        
+    </script>
+</html>
